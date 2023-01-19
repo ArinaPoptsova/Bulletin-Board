@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ bulletin.title }}{% endblock title %}
+
+{% block content %}
+              <p>{{ bulletin.author.username }}</p>
+            <p>{{ bulletin.date }}</p>
+            <h2>{{ bulletin.title }}</h2>
+            <p>{{ bulletin.text|safe }}</p>
+    {% if user == bulletin.author %}
+        <button><a href="{% url 'edit_bulletin' bulletin.slug %}">Edit</a></button>
+    {% else %}
+            <form method="post" action="{% url 'add_response' bulletin.slug %}">
+        {% csrf_token %}
+        <h2>Response</h2>
+        {% for field in form %}
+            {{ field }}
+        {% endfor %}
+        <input type="submit" value="Send">
+    </form>
+    {% endif %}
+{% endblock content %}

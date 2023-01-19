@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Bulletins{% endblock title %}
+
+{% block content %}
+    {% for bulletin in bulletin_list %}
+        <div>
+            <hr>
+            <p>{{ bulletin.author.username }}</p>
+            <p>{{ bulletin.date }}</p>
+            <h2><a href="{% url 'bulletin' bulletin.slug %}">{{ bulletin.title }}</a></h2>
+            <p>{{ bulletin.text|truncatewords:11 |safe }}</p>
+            <hr>
+        </div>
+    {% empty %}
+        <hr>
+        <p>There are no any bulletins yet</p>
+        <hr>
+    {% endfor %}
+{% endblock content %}}

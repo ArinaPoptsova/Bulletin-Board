@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}My responses{% endblock title %}
+
+{% block content %}
+    {% if responses %}
+  <form method="get" action="">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Search">
+  </form>
+    {% endif %}
+      {% for response in responses %}
+    <hr>
+    <h2>{{ response.bulletin }}</h2>
+    <h3>{{ response.author.username }}</h3>
+    <p>{{ response.text }}</p>
+    <p>{{ response.date }}</p>
+    {% if not response.is_accepted %}
+      <button><a href="{% url 'accept' response.pk %}">Accept response</a></button>
+      <button><a href="{% url 'delete_response' response.pk %}">Delete response</a></button>
+    {% else %}
+      <p>The response is accepted</p>
+    {% endif %}
+    <hr>
+  {% empty %}
+    <p>You are have no any responses yet</p>
+  {% endfor %}
+{% endblock content %}}
