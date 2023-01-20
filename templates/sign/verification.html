@@ -2,7 +2,7 @@
 
 {% block title %}{% endblock title %}
 
-{% block content %
+{% block content %}
  <form method="post" action="">
      {% csrf_token %}
      {% for message in messages %}

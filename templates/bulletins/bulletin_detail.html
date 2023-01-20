@@ -7,9 +7,13 @@
             <p>{{ bulletin.date }}</p>
             <h2>{{ bulletin.title }}</h2>
             <p>{{ bulletin.text|safe }}</p>
+    {% for response in response_authors %}
+        {{ response.author.username }}
+    {% endfor %}
+    {% if user.username %}
     {% if user == bulletin.author %}
         <button><a href="{% url 'edit_bulletin' bulletin.slug %}">Edit</a></button>
-    {% else %}
+    {% elif not myresponse  %}
             <form method="post" action="{% url 'add_response' bulletin.slug %}">
         {% csrf_token %}
         <h2>Response</h2>
@@ -18,5 +22,11 @@
         {% endfor %}
         <input type="submit" value="Send">
     </form>
+    {% else %}
+        You have responsed
+    {% endif %}
+    {% endif }
+    {% else %}
+        You need to sign in to response
     {% endif %}
 {% endblock content %}

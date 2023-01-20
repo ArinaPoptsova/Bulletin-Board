@@ -9,22 +9,25 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from bulletins.models import Bulletin, Response
+from sign.models import User
 from .filters import ResponseFilter
 from .forms import BulletinForm, AddResponseForm
 
 
-class BulletinListView(LoginRequiredMixin, ListView):
+class BulletinListView(ListView):
     queryset = Bulletin.objects.filter(is_active=True)
     fields = ('author__name', 'title', 'text', 'category', 'date')
 
 
-class BulletinDetailView(LoginRequiredMixin, DetailView):
+class BulletinDetailView(DetailView):
     model = Bulletin
     slug_field = 'slug'
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['form'] = AddResponseForm()
+        if self.request.user.username:
+            data['myresponse'] = self.object.response_set.get(author=self.request.user)
         return data
 
 
